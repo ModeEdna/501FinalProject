@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" href="/501-project-website/styles.css">
+
+<title>Tree Classifier</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="SVM_files/libs/clipboard/clipboard.min.js"></script>
+<script src="SVM_files/libs/quarto-html/quarto.js"></script>
+<script src="SVM_files/libs/quarto-html/popper.min.js"></script>
+<script src="SVM_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="SVM_files/libs/quarto-html/anchor.min.js"></script>
+<link href="SVM_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="SVM_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="SVM_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="SVM_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="SVM_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+<!-- HEADER BAR -->
+<ul>
+  <!-- link back to homepage -->
+  <li><a href="../../index.html">Home</a></li>
+  
+  <!-- tab without dropdown  -->
+  <li><a href="../aboutMe.html">About Me</a></li>
+
+   <!-- tab without dropdown  -->
+   <li><a href="../introduction.html">Introduction</a></li>
+  
+  <!-- tab with dropdown -->
+  <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">Data Tabs</a>
+      
+      <div class="dropdown-content">
+          
+      <a href="../dataGathering.html">Data Gathering</a>
+      <a href="https://github.com/anly501/anly-501-project-ModeEdna/tree/main/data/projectData" target='_blank'>Raw Data</a>
+      <a href="https://github.com/anly501/anly-501-project-ModeEdna/tree/main/data/cleanData" target='_blank'>Clean Data</a>
+      <a href="../dataCleaning.html">Data Cleaning</a>
+      <a href="../exploringData.html">Exploring Data</a>
+      </div>
+  </li>
+
+  <!-- code tab linked to NB -->
+  <li><a href="../naiveBayes.html">Naive Bayes</a></li>
+
+  <!-- code tab linked to NB -->
+  <li><a href="./SVM.html">SVM</a></li>
+
+  <!-- code tab linked to NB -->
+  <li><a href="../Decision Tree/decisionTree.html">Decision Tree</a></li>
+
+  <!-- code tab linked to github classroom-->
+  <li><a href="../Clustering/Clustering.html">Clustering</a></li>
+
+  <!-- code tab linked to github classroom-->
+  <li><a href="https://github.com/anly501/anly-501-project-ModeEdna/tree/main/codes" target="_blank">Code</a></li>
+  
+  </ul>
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Support Vector Machines</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p><strong>Methods</strong></p>
+<p>Support vector machine (SVM) models are classification models, mainly used for two labels, that assume linear separability in order to predict labels. The general idea is to create an object that lives one dimension lower than that of the data. So, for a typical scatterplot with two dimensions, we would draw a line to separate the classes. As dimensionality increases, the separation object increases in complexity as well.</p>
+<p>A possible problem with this method is that data may not be linearly separable. To counteract this issue, we can use several tricks or methods to separate the data. One important point to raise here is the use of soft and hard margins. A hard margin assumes linear separability, while a soft margin assumes it’s not possible and allows data points to cross the hyperplane. Soft margins then assume that the great majority of points can be classified as initially intended, but with a few errors.</p>
+<p>Furthermore, the Kernel Trick can also be used on on-linearly separable data. The Kernel Trick maps the data inputs onto a higher dimension to create an object that could successfully separate data that on a lower dimension is not separable.</p>
+<p><strong>Grabbing data and preparing it for the model</strong></p>
+<p>In the first few steps, I load the text data that I created during the Naive Baye’s portion of the website and process it as necessary. I make sure to create the labels and to vectorize the text.</p>
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># importing some libraries i'll need</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># load text data</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>df<span class="op">=</span>pd.read_csv(<span class="st">'../../data/cleanData/wiki-crawl-results.csv'</span>)  </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># convert from strings to labels to integers</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>labels<span class="op">=</span>[]<span class="op">;</span> <span class="co">#y1=[]; y2=[]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>y1<span class="op">=</span>[]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> label <span class="kw">in</span> df[<span class="st">"label"</span>]:</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> label <span class="kw">not</span> <span class="kw">in</span> labels:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        labels.append(label)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"index ="</span>,<span class="bu">len</span>(labels)<span class="op">-</span><span class="dv">1</span>,<span class="st">": label ="</span>,label)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>,<span class="bu">len</span>(labels)):</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(label<span class="op">==</span>labels[i]):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            y1.append(i)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>y1<span class="op">=</span>np.array(y1)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># convert df to list of strings</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>corpus<span class="op">=</span>df[<span class="st">"text"</span>].to_list()</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>y2<span class="op">=</span>df[<span class="st">"sentiment"</span>].to_numpy()</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#print("number of text chunks = ",len(corpus))</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#print(corpus[0:3])</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize count vectorizer</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># minDF = 0.01 means "ignore terms that appear in less than 1% of the documents". </span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># minDF = 5 means "ignore terms that appear in less than 5 documents".</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>vectorizer<span class="op">=</span>CountVectorizer(min_df<span class="op">=</span><span class="fl">0.001</span>)   </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># RUN COUNT VECTORIZER ON OUR COURPUS </span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>Xs  <span class="op">=</span>  vectorizer.fit_transform(corpus)   </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span>np.array(Xs.todense())</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to one-hot vectors</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>maxs<span class="op">=</span>np.<span class="bu">max</span>(X,axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span>np.ceil(X<span class="op">/</span>maxs)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co"># DOUBLE CHECK </span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">#print(X.shape,y1.shape,y2.shape)</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">#print("DATA POINT-0:",X[0,0:10],"y1 =",y1[0],"  y2 =",y2[0])</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co"># split the data</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>test_ratio<span class="op">=</span><span class="fl">0.2</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>x_train, x_test, y_train, y_test <span class="op">=</span> train_test_split(X, y1, test_size<span class="op">=</span>test_ratio, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>y_train<span class="op">=</span>y_train.flatten()</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>y_test<span class="op">=</span>y_test.flatten()</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">#print("x_train.shape       :",x_train.shape)</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">#print("y_train.shape       :",y_train.shape)</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">#print("X_test.shape        :",x_test.shape)</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co">#print("y_test.shape        :",y_test.shape)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/modeedna/opt/anaconda3/envs/ANLY501/lib/python3.10/site-packages/scipy/__init__.py:146: UserWarning: A NumPy version &gt;=1.16.5 and &lt;1.23.0 is required for this version of SciPy (detected version 1.23.1
+  warnings.warn(f"A NumPy version &gt;={np_minversion} and &lt;{np_maxversion}"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(7119, 3)
+index = 0 : label = FIFA Qatar
+index = 1 : label = FIFA Ecuador
+index = 2 : label = FIFA Senegal
+index = 3 : label = FIFA Netherlands
+index = 4 : label = FIFA England
+index = 5 : label = FIFA IR
+index = 6 : label = FIFA Iran
+index = 7 : label = FIFA USA
+index = 8 : label = FIFA Wales
+index = 9 : label = FIFA Argentina
+index = 10 : label = FIFA Saudi Arabia
+index = 11 : label = FIFA Mexico
+index = 12 : label = FIFA Poland
+index = 13 : label = FIFA France
+index = 14 : label = Australia
+index = 15 : label = FIFA Denmark
+index = 16 : label = FIFA Tunisia
+index = 17 : label = FIFA Spain
+index = 18 : label = FIFA Costa Rica
+index = 19 : label = FIFA Germany
+index = 20 : label = FIFA Japan
+index = 21 : label = FIFA Belgium
+index = 22 : label = FIFA Canada
+index = 23 : label = FIFA Morocco
+index = 24 : label = FIFA Croatia
+index = 25 : label = FIFA Brazil
+index = 26 : label = FIFA Serbia
+index = 27 : label = FIFA Switzerland
+index = 28 : label = FIFA Cameroon
+index = 29 : label = FIFA Portugal
+index = 30 : label = FIFA Ghana
+index = 31 : label = FIFA Uruguay
+index = 32 : label = FIFA Korea Republic</code></pre>
+</div>
+</div>
+<p><strong>Class distribution</strong></p>
+<p>The class distribution isn’t even. To understand the distribution, I took the count of each label and divided it by the max count of all labels. Ideally, we would want to see percentage values within the 0.90 range, but we have plenty of labels that are at least 4 times smaller in count than the max count label. Having labels that occur more often than others will cause the model to favor those labels, and is likely to misclassify more often than a model with even-weighted labels.</p>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># understand class distribution</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pandas <span class="im">import</span> value_counts</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>daf <span class="op">=</span> pd.DataFrame(value_counts(y1).sort_index())</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>daf[<span class="st">'percentage'</span>] <span class="op">=</span> daf[<span class="dv">0</span>]<span class="op">/</span><span class="bu">max</span>(daf[<span class="dv">0</span>])</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>daf.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+      <th>percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>107</td>
+      <td>0.190053</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>221</td>
+      <td>0.392540</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>222</td>
+      <td>0.394316</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>107</td>
+      <td>0.190053</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>361</td>
+      <td>0.641208</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>134</td>
+      <td>0.238011</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>190</td>
+      <td>0.337478</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>207</td>
+      <td>0.367673</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>177</td>
+      <td>0.314387</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>196</td>
+      <td>0.348135</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p><strong>Feature selection</strong></p>
+<p>For this type of model, the features are the texts for the sentiment scores. Feature selection would then come from cleaning the text, which has already been done. I have already removed stop words from the text and did basic text cleaning like stemming, etc. After the cleaning, there is no more feature selection to be done.</p>
+<p><strong>Model tuning</strong></p>
+<p>For model tuning, the selection between models would be to figure out which multidimensional method to use for the model. I used the approach of one vs all, but we could’ve used the kernel trick or others. Given that the model takes a long time to converge, it felt unnecessary to create a for loop trying different methods; it would’ve taken hours to run and I would lose too much time doing it. Since my prediction won’t actually use text data and I’m doing this part to complete the homework, I decided to select my first choice as the optimal choice.</p>
+<p><strong>Final model</strong></p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> SVC(decision_function_shape<span class="op">=</span><span class="st">'ovo'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>clf.fit(x_train, y_train)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>yt_preds <span class="op">=</span> clf.predict(x_test)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ytr_preds <span class="op">=</span> clf.predict(x_train)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix, ConfusionMatrixDisplay</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test,yt_preds)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span> <span class="op">=</span> ConfusionMatrixDisplay(cm)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">20</span>,<span class="dv">20</span>))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span>.plot(ax<span class="op">=</span>ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7fed20952890&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="SVM_files/figure-html/cell-4-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Accuracy score for the SVM model is: '</span><span class="op">+</span> <span class="bu">str</span>(accuracy_score(y_test,yt_preds)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy score for the SVM model is: 0.3321629213483146</code></pre>
+</div>
+</div>
+<p><strong>Baseline model for comparison</strong></p>
+<p>In order to compare my predictive model, I created a baseline predictor with a 1/33 chance of generating each label (due to there being 33 labels).</p>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># random classifier</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> precision_recall_fscore_support</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_label_data(class_labels, weights,N<span class="op">=</span><span class="dv">10000</span>):</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#e.g. class_labels=[0,1]  weights=[0.2,0.8] (should sum to one)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    random.seed(<span class="dv">42</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>random.choices(class_labels, weights <span class="op">=</span> weights, k <span class="op">=</span> N)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"-----GENERATING DATA-----"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"unique entries:"</span>,Counter(y).keys())  </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"count of labels:"</span>,Counter(y).values()) <span class="co"># counts the elements' frequency</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"probability of labels:"</span>,np.fromiter(Counter(y).values(), dtype<span class="op">=</span><span class="bu">float</span>)<span class="op">/</span><span class="bu">len</span>(y)) <span class="co"># counts the elements' frequency</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#TEST</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>y<span class="op">=</span>generate_label_data([<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>],[<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">33</span>],<span class="dv">1424</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> confusion_matrix(y_test,y)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span> <span class="op">=</span> ConfusionMatrixDisplay(cm)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">20</span>,<span class="dv">20</span>))</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">cmp</span>.plot(ax<span class="op">=</span>ax)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>-----GENERATING DATA-----
+unique entries: dict_keys([21, 0, 9, 7, 24, 22, 29, 2, 13, 16, 6, 17, 19, 26, 23, 11, 5, 31, 3, 27, 32, 12, 18, 20, 28, 1, 8, 30, 25, 10, 15, 14, 4])
+count of labels: dict_values([50, 44, 47, 51, 45, 43, 36, 45, 48, 43, 33, 45, 39, 45, 43, 34, 40, 43, 53, 50, 43, 32, 45, 47, 55, 30, 48, 34, 39, 44, 39, 51, 40])
+probability of labels: [0.03511236 0.03089888 0.03300562 0.03581461 0.03160112 0.03019663
+ 0.0252809  0.03160112 0.03370787 0.03019663 0.02317416 0.03160112
+ 0.02738764 0.03160112 0.03019663 0.0238764  0.02808989 0.03019663
+ 0.0372191  0.03511236 0.03019663 0.02247191 0.03160112 0.03300562
+ 0.0386236  0.02106742 0.03370787 0.0238764  0.02738764 0.03089888
+ 0.02738764 0.03581461 0.02808989]</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7fed209af4c0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="SVM_files/figure-html/cell-6-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Accuracy score for the random classifier is: '</span> <span class="op">+</span> <span class="bu">str</span>(accuracy_score(y_test,y)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy score for the random classifier is: 0.032303370786516857</code></pre>
+</div>
+</div>
+<p><strong>Final results and conclusion</strong></p>
+<p>I was very surprised by the SVM’s ability to predict on the test data. With an accuracy score of 0.33, it means that it can correctly predict the text’s label from 33 choices based on the sentiment score of the text. To be fair, I must mention that I didn’t remove partial mentions of the terms within the text, so it affects the accuracy rate. Either way, this is a great score. Compared to the random classifier, it is better by 10-fold.</p>
+<p>For future steps, I think the first thing to do would be to recreate the model after removing label mentions within the texts, to see if it could accurately predict on their respective labels. I could also try different higher-dimensionality models; I mentioned that I only used one vs all for this problem but I could try the other methods and find out if they yield better results. Furthermore, although out of scope for this class, I could try a neural network to see if it can perform better than the SVM.</p>
+<p>Since my project focuses on using numerical data instead of text data for the predictions, this model won’t transfer well into the goal of this project, but the exercise is good to understand how SVMs work and how they can predict on different dimensions.</p>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

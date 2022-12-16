@@ -1,0 +1,168 @@
+---
+title: "Tree Classifier"
+jupyter: python3
+format:
+  html:
+    code-fold: true
+---
+**Methods**
+
+Support vector machine (SVM) models are classification models, mainly used for two labels, that assume linear separability in order to predict labels. The general idea is to create an object that lives one dimension lower than that of the data. So, for a typical scatterplot with two dimensions, we would draw a line to separate the classes. As dimensionality increases, the separation object increases in complexity as well. 
+
+A possible problem with this method is that data may not be linearly separable. To counteract this issue, we can use several tricks or methods to separate the data. One important point to raise here is the use of soft and hard margins. A hard margin assumes linear separability, while a soft margin assumes it’s not possible and allows data points to cross the hyperplane. Soft margins then assume that the great majority of points can be classified as initially intended, but with a few errors.
+
+Furthermore, the Kernel Trick can also be used on on-linearly separable data. The Kernel Trick maps the data inputs onto a higher dimension to create an object that could successfully separate data that on a lower dimension is not separable.
+
+**Grabbing data and preparing it for the model**
+
+In the first few steps, I load the text data that I created during the Naive Baye's portion of the website and process it as necessary. I make sure to create the labels and to vectorize the text.
+```{python}
+# importing some libraries i'll need
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
+from sklearn.metrics import accuracy_score
+
+# load text data
+df=pd.read_csv('../../data/cleanData/wiki-crawl-results.csv')  
+print(df.shape)
+
+# convert from strings to labels to integers
+labels=[]; #y1=[]; y2=[]
+y1=[]
+for label in df["label"]:
+    if label not in labels:
+        labels.append(label)
+        print("index =",len(labels)-1,": label =",label)
+    for i in range(0,len(labels)):
+        if(label==labels[i]):
+            y1.append(i)
+y1=np.array(y1)
+
+# convert df to list of strings
+corpus=df["text"].to_list()
+y2=df["sentiment"].to_numpy()
+
+#print("number of text chunks = ",len(corpus))
+#print(corpus[0:3])
+
+
+# initialize count vectorizer
+# minDF = 0.01 means "ignore terms that appear in less than 1% of the documents". 
+# minDF = 5 means "ignore terms that appear in less than 5 documents".
+vectorizer=CountVectorizer(min_df=0.001)   
+
+# RUN COUNT VECTORIZER ON OUR COURPUS 
+Xs  =  vectorizer.fit_transform(corpus)   
+X=np.array(Xs.todense())
+
+# convert to one-hot vectors
+maxs=np.max(X,axis=0)
+X=np.ceil(X/maxs)
+
+# DOUBLE CHECK 
+#print(X.shape,y1.shape,y2.shape)
+#print("DATA POINT-0:",X[0,0:10],"y1 =",y1[0],"  y2 =",y2[0])
+
+# split the data
+from sklearn.model_selection import train_test_split
+test_ratio=0.2
+x_train, x_test, y_train, y_test = train_test_split(X, y1, test_size=test_ratio, random_state=0)
+y_train=y_train.flatten()
+y_test=y_test.flatten()
+
+#print("x_train.shape		:",x_train.shape)
+#print("y_train.shape		:",y_train.shape)
+
+#print("X_test.shape		:",x_test.shape)
+#print("y_test.shape		:",y_test.shape)
+```
+
+**Class distribution**
+
+The class distribution isn't even. To understand the distribution, I took the count of each label and divided it by the max count of all labels. Ideally, we would want to see percentage values within the 0.90 range, but we have plenty of labels that are at least 4 times smaller in count than the max count label. Having labels that occur more often than others will cause the model to favor those labels, and is likely to misclassify more often than a model with even-weighted labels.
+
+```{python}
+# understand class distribution
+from pandas import value_counts
+daf = pd.DataFrame(value_counts(y1).sort_index())
+daf['percentage'] = daf[0]/max(daf[0])
+daf.head(10)
+```
+
+**Feature selection**
+
+For this type of model, the features are the texts for the sentiment scores. Feature selection would then come from cleaning the text, which has already been done. I have already removed stop words from the text and did basic text cleaning like stemming, etc. After the cleaning, there is no more feature selection to be done.
+
+**Model tuning**
+
+For model tuning, the selection between models would be to figure out which multidimensional method to use for the model. I used the approach of one vs all, but we could've used the kernel trick or others. Given that the model takes a long time to converge, it felt unnecessary to create a for loop trying different methods; it would've taken hours to run and I would lose too much time doing it. Since my prediction won't actually use text data and I'm doing this part to complete the homework, I decided to select my first choice as the optimal choice.
+
+**Final model**
+
+```{python}
+from sklearn.svm import SVC
+clf = SVC(decision_function_shape='ovo')
+clf.fit(x_train, y_train)
+
+yt_preds = clf.predict(x_test)
+ytr_preds = clf.predict(x_train)
+
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+
+cm = confusion_matrix(y_test,yt_preds)
+cmp = ConfusionMatrixDisplay(cm)
+fig, ax = plt.subplots(figsize=(20,20))
+cmp.plot(ax=ax)
+```
+
+```{python}
+print('Accuracy score for the SVM model is: '+ str(accuracy_score(y_test,yt_preds)))
+```
+
+**Baseline model for comparison**
+
+In order to compare my predictive model, I created a baseline predictor with a 1/33 chance of generating each label (due to there being 33 labels).
+
+```{python}
+# random classifier
+import numpy as np
+import random
+from collections import Counter
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_recall_fscore_support
+
+def generate_label_data(class_labels, weights,N=10000):
+    #e.g. class_labels=[0,1]  weights=[0.2,0.8] (should sum to one)
+    random.seed(42)
+    y=random.choices(class_labels, weights = weights, k = N)
+    print("-----GENERATING DATA-----")
+    print("unique entries:",Counter(y).keys())  
+    print("count of labels:",Counter(y).values()) # counts the elements' frequency
+    print("probability of labels:",np.fromiter(Counter(y).values(), dtype=float)/len(y)) # counts the elements' frequency
+    return y
+
+#TEST
+y=generate_label_data([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],[1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33,1/33],1424)
+
+cm = confusion_matrix(y_test,y)
+cmp = ConfusionMatrixDisplay(cm)
+fig, ax = plt.subplots(figsize=(20,20))
+cmp.plot(ax=ax)
+```
+
+```{python}
+print('Accuracy score for the random classifier is: ' + str(accuracy_score(y_test,y)))
+```
+
+
+**Final results and conclusion**
+
+I was very surprised by the SVM's ability to predict on the test data. With an accuracy score of 0.33, it means that it can correctly predict the text's label from 33 choices based on the sentiment score of the text. To be fair, I must mention that I didn't remove partial mentions of the terms within the text, so it affects the accuracy rate. Either way, this is a great score. Compared to the random classifier, it is better by 10-fold.
+
+For future steps, I think the first thing to do would be to recreate the model after removing label mentions within the texts, to see if it could accurately predict on their respective labels. I could also try different higher-dimensionality models; I mentioned that I only used one vs all for this problem but I could try the other methods and find out if they yield better results. Furthermore, although out of scope for this class, I could try a neural network to see if it can perform better than the SVM.
+
+Since my project focuses on using numerical data instead of text data for the predictions, this model won't transfer well into the goal of this project, but the exercise is good to understand how SVMs work and how they can predict on different dimensions.

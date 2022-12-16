@@ -1,0 +1,161 @@
+"","Country","Group","Year","Host","PastGroup","DifficultGroup","MedianAge","MedianCaps","FifaRanking","eliteTeamPlayers"
+"1","Denmark","A","2002","0","1","1",NA,NA,NA,NA
+"2","France","A","2002","0","0","1",NA,NA,NA,NA
+"3","Senegal","A","2002","0","1","1",NA,NA,NA,NA
+"4","Uruguay","A","2002","0","0","1",NA,NA,NA,NA
+"5","Spain","B","2002","0","1","0",NA,NA,NA,NA
+"6","Slovenia","B","2002","0","0","0",NA,NA,NA,NA
+"7","Paraguay","B","2002","0","1","0",NA,NA,NA,NA
+"8","South Africa","B","2002","0","0","0",NA,NA,NA,NA
+"9","Brazil","C","2002","0","1","0",NA,NA,NA,NA
+"10","Turkey","C","2002","0","1","0",NA,NA,NA,NA
+"11","China","C","2002","0","0","0",NA,NA,NA,NA
+"12","Costa Rica","C","2002","0","0","0",NA,NA,NA,NA
+"13"," South Korea","D","2002","1","1","0",NA,NA,NA,NA
+"14","Poland","D","2002","0","0","0",NA,NA,NA,NA
+"15","United States","D","2002","0","1","0",NA,NA,NA,NA
+"16","Portugal","D","2002","0","0","0",NA,NA,NA,NA
+"17","Germany","E","2002","0","1","0",NA,NA,NA,NA
+"18","Saudi Arabia","E","2002","0","0","0",NA,NA,NA,NA
+"19","Republic of Ireland","E","2002","0","1","0",NA,NA,NA,NA
+"20","Cameroon","E","2002","0","0","0",NA,NA,NA,NA
+"21","Argentina","F","2002","0","0","1",NA,NA,NA,NA
+"22","Nigeria","F","2002","0","0","1",NA,NA,NA,NA
+"23","England","F","2002","0","1","1",NA,NA,NA,NA
+"24","Sweden","F","2002","0","1","1",NA,NA,NA,NA
+"25","Italy","G","2002","0","1","0",NA,NA,NA,NA
+"26","Ecuador","G","2002","0","0","0",NA,NA,NA,NA
+"27","Croatia","G","2002","0","0","0",NA,NA,NA,NA
+"28","Mexico","G","2002","0","1","0",NA,NA,NA,NA
+"29","Japan","H","2002","1","1","0",NA,NA,NA,NA
+"30","Belgium","H","2002","0","1","0",NA,NA,NA,NA
+"31","Russia","H","2002","0","0","0",NA,NA,NA,NA
+"32","Tunisia","H","2002","0","0","0",NA,NA,NA,NA
+"33","Germany","A","2006","1","1","0",NA,NA,NA,NA
+"34","Ecuador","A","2006","0","1","0",NA,NA,NA,NA
+"35","Poland","A","2006","0","0","0",NA,NA,NA,NA
+"36","Costa Rica","A","2006","0","0","0",NA,NA,NA,NA
+"37","England","B","2006","0","1","0",NA,NA,NA,NA
+"38","Sweden","B","2006","0","1","0",NA,NA,NA,NA
+"39","Paraguay","B","2006","0","0","0",NA,NA,NA,NA
+"40","Trinidad and Tobago","B","2006","0","0","0",NA,NA,NA,NA
+"41","Argentina","C","2006","0","1","1",NA,NA,NA,NA
+"42","Netherlands","C","2006","0","1","1",NA,NA,NA,NA
+"43","Ivory Coast","C","2006","0","0","1",NA,NA,NA,NA
+"44","Serbia and Montenegro","C","2006","0","0","1",NA,NA,NA,NA
+"45","Portugal","D","2006","0","1","0",NA,NA,NA,NA
+"46","Mexico","D","2006","0","1","0",NA,NA,NA,NA
+"47","Angola","D","2006","0","0","0",NA,NA,NA,NA
+"48","Iran","D","2006","0","0","0",NA,NA,NA,NA
+"49","Italy","E","2006","0","1","0",NA,NA,NA,NA
+"50","Ghana","E","2006","0","1","0",NA,NA,NA,NA
+"51","Czech republic","E","2006","0","0","0",NA,NA,NA,NA
+"52","United States","E","2006","0","0","0",NA,NA,NA,NA
+"53","Brazil","F","2006","0","1","0",NA,NA,NA,NA
+"54","Australia","F","2006","0","1","0",NA,NA,NA,NA
+"55","Croatia","F","2006","0","0","0",NA,NA,NA,NA
+"56","Japan","F","2006","0","0","0",NA,NA,NA,NA
+"57","Switzerland","G","2006","0","1","0",NA,NA,NA,NA
+"58","France","G","2006","0","1","0",NA,NA,NA,NA
+"59","South Korea","G","2006","0","0","0",NA,NA,NA,NA
+"60","Togo","G","2006","0","0","0",NA,NA,NA,NA
+"61","Spain","H","2006","0","1","0",NA,NA,NA,NA
+"62","Ukraine","H","2006","0","1","0",NA,NA,NA,NA
+"63","Tunisia","H","2006","0","0","0",NA,NA,NA,NA
+"64","Saudi Arabia","H","2006","0","0","0",NA,NA,NA,NA
+"65","Uruguay","A","2010","0","1","1",NA,NA,NA,NA
+"66","Mexico","A","2010","0","1","1",NA,NA,NA,NA
+"67","South Africa","A","2010","1","0","1",NA,NA,NA,NA
+"68","France","A","2010","0","0","1",NA,NA,NA,NA
+"69","Argentina","B","2010","0","1","0",NA,NA,NA,NA
+"70","South Korea","B","2010","0","1","0",NA,NA,NA,NA
+"71","Greece","B","2010","0","0","0",NA,NA,NA,NA
+"72","Nigeria","B","2010","0","0","0",NA,NA,NA,NA
+"73","United States","C","2010","0","1","0",NA,NA,NA,NA
+"74","England","C","2010","0","1","0",NA,NA,NA,NA
+"75","Slovenia","C","2010","0","0","0",NA,NA,NA,NA
+"76","Algeria","C","2010","0","0","0",NA,NA,NA,NA
+"77","Germany","D","2010","0","1","0",NA,NA,NA,NA
+"78","Ghana","D","2010","0","1","0",NA,NA,NA,NA
+"79","Australia","D","2010","0","0","0",NA,NA,NA,NA
+"80","Serbia","D","2010","0","0","0",NA,NA,NA,NA
+"81","Netherlands","E","2010","0","1","0",NA,NA,NA,NA
+"82","Japan","E","2010","0","1","0",NA,NA,NA,NA
+"83","Denmark","E","2010","0","0","0",NA,NA,NA,NA
+"84","Cameroon","E","2010","0","0","0",NA,NA,NA,NA
+"85","Paraguay","F","2010","0","1","0",NA,NA,NA,NA
+"86","Slovakia","F","2010","0","1","0",NA,NA,NA,NA
+"87","New Zealand","F","2010","0","0","0",NA,NA,NA,NA
+"88","Italy","F","2010","0","0","0",NA,NA,NA,NA
+"89","Brazil","G","2010","0","1","1",NA,NA,NA,NA
+"90","Portugal","G","2010","0","1","1",NA,NA,NA,NA
+"91","Ivory Coast","G","2010","0","0","1",NA,NA,NA,NA
+"92","North Korea","G","2010","0","0","1",NA,NA,NA,NA
+"93","Spain","H","2010","0","1","0",NA,NA,NA,NA
+"94","Chile","H","2010","0","1","0",NA,NA,NA,NA
+"95","Switzerland","H","2010","0","0","0",NA,NA,NA,NA
+"96","Honduras","H","2010","0","0","0",NA,NA,NA,NA
+"97","Brazil","A","2014","1","1","0",NA,NA,NA,NA
+"98","Mexico","A","2014","0","1","0",NA,NA,NA,NA
+"99","Croatia","A","2014","0","0","0",NA,NA,NA,NA
+"100","Cameroon","A","2014","0","0","0",NA,NA,NA,NA
+"101","Netherlands","B","2014","0","1","1",NA,NA,NA,NA
+"102","Chile","B","2014","0","1","1",NA,NA,NA,NA
+"103","Spain","B","2014","0","0","1",NA,NA,NA,NA
+"104","Australia","B","2014","0","0","1",NA,NA,NA,NA
+"105","Colombia","C","2014","0","1","0",NA,NA,NA,NA
+"106","Greece","C","2014","0","1","0",NA,NA,NA,NA
+"107","Ivory Coast","C","2014","0","0","0",NA,NA,NA,NA
+"108","Japan","C","2014","0","0","0",NA,NA,NA,NA
+"109","Costa Rica","D","2014","0","1","1",NA,NA,NA,NA
+"110","Uruguay","D","2014","0","1","1",NA,NA,NA,NA
+"111","Italy","D","2014","0","0","1",NA,NA,NA,NA
+"112","England","D","2014","0","0","1",NA,NA,NA,NA
+"113","France","E","2014","0","1","0",NA,NA,NA,NA
+"114","Switzerland","E","2014","0","1","0",NA,NA,NA,NA
+"115","Ecuador","E","2014","0","0","0",NA,NA,NA,NA
+"116","Honduras","E","2014","0","0","0",NA,NA,NA,NA
+"117","Argentina","F","2014","0","1","0",NA,NA,NA,NA
+"118","Nigeria","F","2014","0","1","0",NA,NA,NA,NA
+"119","Bosnia and Herzegovina","F","2014","0","0","0",NA,NA,NA,NA
+"120","Iran","F","2014","0","0","0",NA,NA,NA,NA
+"121","Germany","G","2014","0","1","1",NA,NA,NA,NA
+"122","United States","G","2014","0","1","1",NA,NA,NA,NA
+"123","Portugal","G","2014","0","0","1",NA,NA,NA,NA
+"124","Ghana","G","2014","0","0","1",NA,NA,NA,NA
+"125","Belgium","H","2014","0","1","0",NA,NA,NA,NA
+"126","Algeria","H","2014","0","1","0",NA,NA,NA,NA
+"127","Russia","H","2014","0","0","0",NA,NA,NA,NA
+"128","South Korea","H","2014","0","0","0",NA,NA,NA,NA
+"129","Uruguay","A","2018","0","1","0",NA,NA,NA,NA
+"130","Russia","A","2018","1","1","0",NA,NA,NA,NA
+"131","Saudi Arabia","A","2018","0","0","0",NA,NA,NA,NA
+"132","Egypt","A","2018","0","0","0",NA,NA,NA,NA
+"133","Spain","B","2018","0","1","0",NA,NA,NA,NA
+"134","Portugal","B","2018","0","1","0",NA,NA,NA,NA
+"135","Iran","B","2018","0","0","0",NA,NA,NA,NA
+"136","Morocco","B","2018","0","0","0",NA,NA,NA,NA
+"137","France","C","2018","0","1","0",NA,NA,NA,NA
+"138","Denmark","C","2018","0","1","0",NA,NA,NA,NA
+"139","Peru","C","2018","0","0","0",NA,NA,NA,NA
+"140","Australia","C","2018","0","0","0",NA,NA,NA,NA
+"141","Croatia","D","2018","0","1","1",NA,NA,NA,NA
+"142","Argentina","D","2018","0","1","1",NA,NA,NA,NA
+"143","Nigeria","D","2018","0","0","1",NA,NA,NA,NA
+"144","Iceland","D","2018","0","0","1",NA,NA,NA,NA
+"145","Brazil","E","2018","0","1","0",NA,NA,NA,NA
+"146","Switzerland","E","2018","0","1","0",NA,NA,NA,NA
+"147","Serbia","E","2018","0","0","0",NA,NA,NA,NA
+"148","Costa Rica","E","2018","0","0","0",NA,NA,NA,NA
+"149","Sweden","F","2018","0","1","1",NA,NA,NA,NA
+"150","Mexico","F","2018","0","1","1",NA,NA,NA,NA
+"151","South Korea","F","2018","0","0","1",NA,NA,NA,NA
+"152","Germany","F","2018","0","0","1",NA,NA,NA,NA
+"153","Belgium","G","2018","0","1","0",NA,NA,NA,NA
+"154","England","G","2018","0","1","0",NA,NA,NA,NA
+"155","Tunisia","G","2018","0","0","0",NA,NA,NA,NA
+"156","Panama","G","2018","0","0","0",NA,NA,NA,NA
+"157","Colombia","H","2018","0","1","0",NA,NA,NA,NA
+"158","Japan","H","2018","0","1","0",NA,NA,NA,NA
+"159","Senegal","H","2018","0","0","0",NA,NA,NA,NA
+"160","Poland","H","2018","0","0","0",NA,NA,NA,NA

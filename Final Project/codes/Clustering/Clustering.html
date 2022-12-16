@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<link rel="stylesheet" type='text/css' media="screen" href="../../styles.css">
+
+<title>Clustering Methods</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="Clustering_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Clustering_files/libs/quarto-html/quarto.js"></script>
+<script src="Clustering_files/libs/quarto-html/popper.min.js"></script>
+<script src="Clustering_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Clustering_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Clustering_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Clustering_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Clustering_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Clustering_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Clustering_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<!-- HEADER BAR -->
+<ul>
+  <!-- link back to homepage -->
+  <li><a href="/501-project-website/index.html">Home</a></li>
+  
+  <!-- tab without dropdown  -->
+  <li><a href="../aboutMe.html">About Me</a></li>
+
+   <!-- tab without dropdown  -->
+   <li><a href="../introduction.html">Introduction</a></li>
+  
+  <!-- tab with dropdown -->
+  <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">Data Tabs</a>
+      
+      <div class="dropdown-content">
+          
+      <a href="../dataGathering.html">Data Gathering</a>
+      <a href="https://github.com/anly501/anly-501-project-ModeEdna/tree/main/data/projectData" target='_blank'>Raw Data</a>
+      <a href="https://github.com/anly501/anly-501-project-ModeEdna/tree/main/data/cleanData" target='_blank'>Clean Data</a>
+      <a href="../dataCleaning.html">Data Cleaning</a>
+      <a href="../exploringData.html">Exploring Data</a>
+      </div>
+  </li>
+
+  <!-- code tab linked to NB -->
+  <li><a href="../naiveBayes.html">Naive Bayes</a></li>
+
+  <!-- code tab linked to NB -->
+  <li><a href="../SVM/SVM.html">SVM</a></li>
+
+  <!-- code tab linked to NB -->
+  <li><a href="../Decision Tree/decisionTree.html">Decision Tree</a></li>
+
+  <!-- code tab linked to NB -->
+  <li><a href="../Clustering/Clustering.html">Clustering</a></li>
+
+  <!-- code tab linked to github classroom-->
+  <li><a href="https://github.com/anly501/anly-501-project-ModeEdna/tree/main/codes" target="_blank">Code</a></li>
+  
+  </ul>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Clustering Methods</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loading requires libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/modeedna/opt/anaconda3/envs/ANLY501/lib/python3.10/site-packages/scipy/__init__.py:146: UserWarning: A NumPy version &gt;=1.16.5 and &lt;1.23.0 is required for this version of SciPy (detected version 1.23.1
+  warnings.warn(f"A NumPy version &gt;={np_minversion} and &lt;{np_maxversion}"</code></pre>
+</div>
+</div>
+<p><strong>Feature data X</strong></p>
+<p>For information on how the data was gathered, please refer to the data tab on this website. There, you can find information on data gathering, cleaning, etc. For clusterization methods, our feature data would be the same as the data used for all othe models, but I have to remove the <em>PastGroup</em> variable, since those are the clusters we are trying to predict.</p>
+<p>Although clustering analysis is often used as a data exploration method, separating the vectors into their correct <em>PastGroup</em> label would offer the apporpriate predictive model for me. That is because my model is trying to predict which teams make it out of the group phase, which would be the same as classifying them under one of the two possible groups: 0 (didn’t make it) and 1 (got out of the group stage).</p>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import data</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'../../../data/cleanData/allTables.csv'</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df.drop([<span class="st">'Unnamed: 0'</span>,<span class="st">'Country'</span>,<span class="st">'Group'</span>,<span class="st">'Year'</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Host</th>
+      <th>PastGroup</th>
+      <th>DifficultGroup</th>
+      <th>RankFIFA</th>
+      <th>QualiStreak</th>
+      <th>Caps</th>
+      <th>eliteClub</th>
+      <th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>20</td>
+      <td>2</td>
+      <td>24.000000</td>
+      <td>7</td>
+      <td>26.212717</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>38.304348</td>
+      <td>15</td>
+      <td>27.370376</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>42</td>
+      <td>1</td>
+      <td>17.826087</td>
+      <td>0</td>
+      <td>24.355427</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>24</td>
+      <td>1</td>
+      <td>22.869565</td>
+      <td>5</td>
+      <td>25.345519</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>8</td>
+      <td>7</td>
+      <td>18.043478</td>
+      <td>8</td>
+      <td>25.915279</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p><strong>Model Descriptions</strong></p>
+<p><em>K-Means</em></p>
+<p>K-Means is a model that separates <em>n</em> vectors into <em>k</em> clusters by assigning them to the cluster whose prototype (cluster centroid) is most similar to the vector in question. In simpler terms, K-Means attempts to group different rows of data based on their similarity. Hopefully, if the grouping is done correctly, we can learn new patterns and information about our data and how they relate to each other.</p>
+<p>For this method, we often use the Euclidean distance between points to understand their similarity. The closer the points are to each other, the more similar they are, and vice versa. To optimize this model, we use the elbow method, which is a graph that uses the inertia and/or distortion metrics to evaluate the model’s ability to cluster the data into different groups.</p>
+<p>Although K-Means is a fast and efficient clustering method, it tends to work with very specific datasets. It doesn’t do well with data that isn’t obviously forming a cluster or data that has unusual shapes (e.g.&nbsp;rings, circles, etc.).</p>
+<hr>
+<p><em>DBSCAN</em></p>
+<p>DBSCAN stands for Density Based Clustering of Applications with Noise. This type of model focuses on the density of data around an area and allows for point that are relatively nearby to be classified as different clusters if there happens to be non-dense space between them. For points that have no density around them, they are seen as outliers. This type of model is non-parametric, meaning that all adjustments to its performance come from the user, in the form of hyperparameters.</p>
+<p>DBSCANs are best used for non-linear data, as it is able to better capture complicated relationships between data points. In situations where K-Means struggles to properly identify clusters, it would be a good idea to bring in DBSCANs to see if they perform better.</p>
+<p>In order to find the optimal hyperparameters, just like with K-Means, we can use the Elbow Method or the Silhouette Method. The Elbow Method focuses on the sum of squared distances of samples to their closest cluster center (good would be low inertia and low number of clusters), while the Silhouette Method focuses on the distance between the clusters (the closer the score is to 1, the better the clustering).</p>
+<hr>
+<p><em>Hierarchical Clustering</em></p>
+<p>Hierarchical clustering is not just one type of model, but a type of clustering. This method of clustering doesn’t assume a particular number of groups, rather it creates a tree (dendrogram) of clusters and continues to separate points until each point is seen as its own cluster. Within hierarchical clustering, there are two types of method: agglomerative and division. Agglomerative starts by making each point a cluster and works its way up to one cluster. Division does the opposite.</p>
+<p>These types of models are comparative to DBSCANs in terms of performance. They are able to cluster non-linear data with good precision. However, each model’s accuracy can be dependent on the situation. It is best used for EDA and occasionaly as label predictions (depending on your data). To optimize it, we can also use the Elbow and Silhouette Methods.</p>
+<hr>
+<p><strong>Data Preprocessing</strong></p>
+<p>For this model, I had to remove certain non-numerical labels, given that numerical data is needed for clustering. I could’ve turned the string/factor variables into numerical data but they wouldn’t provide much information on the teams’ performance. The removed variables are <em>Country</em>, <em>Year</em>, and <em>Group</em>. Since none of these are seen as likely predictors of a team’s success, I chose to remove them for this modeling section.</p>
+<p>The data used will be the same as the data previously shown on this page, although I will be removing the <em>PastGroup</em> variable to use later on for evaluation purposes. Also, there is no point in leaving the cluster each data point belongs to within their vector! Furthermore, I standardized the data to ensure proper representation in the vector and improve results. Following is the normalized data set.</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># separate the data into features and label and normalize</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[[<span class="st">'PastGroup'</span>]]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> df.drop(<span class="st">'PastGroup'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># standardize the data</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scaler.fit_transform(x)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.DataFrame(X, columns<span class="op">=</span>x.columns, index<span class="op">=</span>x.index)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>X.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="3">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Host</th>
+      <th>DifficultGroup</th>
+      <th>RankFIFA</th>
+      <th>QualiStreak</th>
+      <th>Caps</th>
+      <th>eliteClub</th>
+      <th>Age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-0.197386</td>
+      <td>1.732051</td>
+      <td>-0.206644</td>
+      <td>-0.460516</td>
+      <td>-1.005656</td>
+      <td>0.464009</td>
+      <td>-0.617086</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.197386</td>
+      <td>1.732051</td>
+      <td>-1.239863</td>
+      <td>-0.460516</td>
+      <td>0.643064</td>
+      <td>2.060600</td>
+      <td>0.403308</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.197386</td>
+      <td>1.732051</td>
+      <td>0.989715</td>
+      <td>-0.687232</td>
+      <td>-1.717262</td>
+      <td>-0.933008</td>
+      <td>-2.254155</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-0.197386</td>
+      <td>1.732051</td>
+      <td>0.010876</td>
+      <td>-0.687232</td>
+      <td>-1.135950</td>
+      <td>0.064862</td>
+      <td>-1.381459</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-0.197386</td>
+      <td>-0.577350</td>
+      <td>-0.859203</td>
+      <td>0.673062</td>
+      <td>-1.692206</td>
+      <td>0.663583</td>
+      <td>-0.879257</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p><strong>Model Creation</strong></p>
+<p><em>K-Means</em></p>
+<p>First we must go through hyperparameter tuning. In order to do so, we use the Elbow Method, which means iterating over different, possible hyperparameters to see which one gives us the best score.</p>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.spatial.distance <span class="im">import</span> cdist</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># i created a list for the desired metrics to later display on a dataframe and plot</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>clus <span class="op">=</span> []</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>dist <span class="op">=</span> []</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>ine <span class="op">=</span> []</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">11</span>):</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>i, random_state<span class="op">=</span><span class="dv">0</span>).fit(X)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    ine.append(model.inertia_)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    dist.append(<span class="bu">sum</span>(np.<span class="bu">min</span>(cdist(X, model.cluster_centers_,<span class="st">'euclidean'</span>), axis<span class="op">=</span><span class="dv">1</span>)) <span class="op">/</span> X.shape[<span class="dv">0</span>]) <span class="co"># used this part of code from a Geeks for Geeks page</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    clus.append(i)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame({<span class="st">'Clusters'</span>: clus, <span class="st">'Distortion'</span>: dist, <span class="st">'Inertia'</span>: ine})</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>df2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Clusters</th>
+      <th>Distortion</th>
+      <th>Inertia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2.410444</td>
+      <td>1120.000000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>2.098632</td>
+      <td>866.046925</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>1.972900</td>
+      <td>713.955895</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>1.799369</td>
+      <td>593.695264</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>1.648833</td>
+      <td>516.249552</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>1.551209</td>
+      <td>465.984073</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>1.481509</td>
+      <td>421.136172</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>1.428495</td>
+      <td>390.201734</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>1.362819</td>
+      <td>360.102228</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>1.337178</td>
+      <td>336.328137</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Elbow plot:</p>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df2, x<span class="op">=</span><span class="st">'Clusters'</span>,y<span class="op">=</span><span class="st">'Inertia'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df2, x<span class="op">=</span><span class="st">'Clusters'</span>,y<span class="op">=</span><span class="st">'Distortion'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="Clustering_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Clustering_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>According to the above graph, the optimal choice of clusters would be at the inflection point of 5 clusters. Now that we know this, we must recreate the model with the optimal number of clusters.</p>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(X)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Inertia for the 5-cluster model is : '</span> <span class="op">+</span> <span class="bu">str</span>(model.inertia_))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'The variables used for the model were : '</span> <span class="op">+</span> <span class="bu">str</span>(model.feature_names_in_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Inertia for the 5-cluster model is : 516.2495520286845
+The variables used for the model were : ['Host' 'DifficultGroup' 'RankFIFA' 'QualiStreak' 'Caps' 'eliteClub' 'Age']</code></pre>
+</div>
+</div>
+<p>Ideally, we would’ve wanted the clustering method to group the data into two groups, one representing the teams that got into the knockout stage and the other representing the teams that didn’t make it out of the group stage. Unfortunately, the optimal number of clusters is 5, so we now have to figure out what each of them represent.</p>
+<hr>
+<p><em>DBSCAN</em></p>
+<p>We repeat the hyperparameter tuning process used for K-Means, but this time with the silhouette score.</p>
+<div class="cell" data-execution_count="7">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># import desired metrics</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> DBSCAN</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create list for iterating values and dataframe</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>clus <span class="op">=</span> []</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> []</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>sil <span class="op">=</span> []</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">1</span>,<span class="fl">1.1</span>,<span class="fl">1.2</span>,<span class="fl">1.3</span>,<span class="fl">1.4</span>,<span class="fl">1.5</span>,<span class="fl">1.6</span>,<span class="fl">1.7</span>,<span class="fl">1.8</span>,<span class="fl">1.9</span>,<span class="dv">2</span>]:</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> DBSCAN(eps<span class="op">=</span>i, min_samples<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    preds <span class="op">=</span> model.fit_predict(X)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    eps.append(i)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    sil.append(silhouette_score(X, preds))</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    clus.append(<span class="bu">len</span>(pd.Series(preds).unique()))</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>df3 <span class="op">=</span> pd.DataFrame({<span class="st">'Clusters'</span>: clus, <span class="st">'Eps'</span>: eps, <span class="st">'Silhouette'</span>: sil})</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>df3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="7">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Clusters</th>
+      <th>Eps</th>
+      <th>Silhouette</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>7</td>
+      <td>1.0</td>
+      <td>-0.047503</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>1.1</td>
+      <td>0.084714</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7</td>
+      <td>1.2</td>
+      <td>0.111169</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7</td>
+      <td>1.3</td>
+      <td>0.133401</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>1.4</td>
+      <td>0.213129</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>4</td>
+      <td>1.5</td>
+      <td>0.222293</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3</td>
+      <td>1.6</td>
+      <td>0.221920</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>4</td>
+      <td>1.7</td>
+      <td>0.217839</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>4</td>
+      <td>1.8</td>
+      <td>0.223472</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>4</td>
+      <td>1.9</td>
+      <td>0.227048</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>3</td>
+      <td>2.0</td>
+      <td>0.257012</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df3, x<span class="op">=</span><span class="st">'Eps'</span>,y<span class="op">=</span><span class="st">'Silhouette'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="Clustering_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The optimal results say that we should choosea DBSCAN with eps of 2.0. For context, the eps hyperparameter defines the threshold for distance between points to be considered part of the same cluster. That is, for each point that is being compared to another, if they are less than 2 distance units away from each other, they will be considered as belonging to the same group. For the silhouette score, we want to get as close to 1 as possible, and eps 2.0 gave us the highest silhouette score of .24. This score and eps correspond to a model that created 3 clusters.</p>
+<div class="cell" data-execution_count="9">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creating the optimal model</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="dv">2</span>, min_samples<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> model2.fit_predict(X)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'The labels assigned by this model are : '</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">set</span>(model2.labels_)))</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'The variables used for the model were : '</span> <span class="op">+</span> <span class="bu">str</span>(model2.feature_names_in_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The labels assigned by this model are : {0, 1, -1}
+The variables used for the model were : ['Host' 'DifficultGroup' 'RankFIFA' 'QualiStreak' 'Caps' 'eliteClub' 'Age']</code></pre>
+</div>
+</div>
+<p>DBSCAN’s optimal model is one clustering our data into 3 groups, and most of the points are being put into two of the three groups. This result is closer to what we’re looking for, but we need to see if the clusters correspond to the teams that make it out group stages and those who don’t.</p>
+<hr>
+<p><em>Agglomerative</em></p>
+<p>We repeat the hyperparameter tuning process used for DBSCAN modeling.</p>
+<div class="cell" data-execution_count="10">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> AgglomerativeClustering</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform Agglomerative Clustering</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>clus <span class="op">=</span> []</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>sil <span class="op">=</span> []</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>,<span class="dv">11</span>):</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> AgglomerativeClustering(n_clusters<span class="op">=</span>i)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    preds <span class="op">=</span> model.fit_predict(X)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    sil.append(silhouette_score(X, preds))</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    clus.append(i)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>df4 <span class="op">=</span> pd.DataFrame({<span class="st">'Clusters'</span>: clus, <span class="st">'Silhouette'</span>: sil})</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>df4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="10">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Clusters</th>
+      <th>Silhouette</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>0.236370</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>0.268206</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>0.277240</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>0.228017</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>0.243023</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>0.236350</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>8</td>
+      <td>0.238881</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>9</td>
+      <td>0.243201</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>10</td>
+      <td>0.236582</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">5</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df4, x<span class="op">=</span><span class="st">'Clusters'</span>,y<span class="op">=</span><span class="st">'Silhouette'</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="Clustering_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The optimal results say that we should choose a model with 4 clusters, as the silhouette score is highest with that option. Choosing 3 clusters would yield a similar score, so if we are interested in minimizing the number of clusters, 3 would also be a good option. Since I want to get 2 or 3 clusters, I’ll go for the smaller option.</p>
+<div class="cell" data-execution_count="12">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creating the modle and finding some of its attributes</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> AgglomerativeClustering(n_clusters<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> model3.fit_predict(X)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'The labels assigned by this model are : '</span> <span class="op">+</span> <span class="bu">str</span>(<span class="bu">set</span>(model3.labels_)))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'The variables used for the model were : '</span> <span class="op">+</span> <span class="bu">str</span>(model3.feature_names_in_))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The labels assigned by this model are : {0, 1, 2}
+The variables used for the model were : ['Host' 'DifficultGroup' 'RankFIFA' 'QualiStreak' 'Caps' 'eliteClub' 'Age']</code></pre>
+</div>
+</div>
+<p>The above code shows some of the attributes coming from the optimal model.</p>
+<hr>
+<p><strong>Results</strong></p>
+<p>Given that K-Mean works best for linear data, I found DBSCAN and agglomerative clustering to be the ones that gave the best result, or at least, the results closest to what I was looking for. K-Means wanted to create too many clusters and the other two options decided on a range of 2-4 clusters as the optimal amount. In terms of ease of use, they were all equally easy to create. Since I’m using the sklearn library, all I had to do was replicate the code I had used for the previous model. It only took some messing around with the hyperparameters to create the model.</p>
+<p>To find connections between the predicted labels and the gorund truth, I added the predictions back into the y dataframe that contained the labels and compared the values for each model’s predictions against the labels.</p>
+<div class="cell" data-execution_count="13">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pd.options.mode.chained_assignment <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># adding the labels as columns to the y df</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>y[<span class="st">'K-Means'</span>] <span class="op">=</span> model.labels_</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>y[<span class="st">'DBSCAN'</span>] <span class="op">=</span> model2.labels_</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>y[<span class="st">'Agglomerative'</span>] <span class="op">=</span> model3.labels_</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>y[<span class="st">'K-Means.D'</span>] <span class="op">=</span> np.where(y[<span class="st">'PastGroup'</span>]<span class="op">==</span>y[<span class="st">'K-Means'</span>], <span class="va">True</span>, <span class="va">False</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>y[<span class="st">'DBSCAN.D'</span>] <span class="op">=</span> np.where(y[<span class="st">'PastGroup'</span>]<span class="op">==</span>y[<span class="st">'DBSCAN'</span>], <span class="va">True</span>, <span class="va">False</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>y[<span class="st">'Agglomerative.D'</span>] <span class="op">=</span> np.where(y[<span class="st">'PastGroup'</span>]<span class="op">==</span>y[<span class="st">'Agglomerative'</span>], <span class="va">True</span>, <span class="va">False</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="13">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>PastGroup</th>
+      <th>K-Means</th>
+      <th>DBSCAN</th>
+      <th>Agglomerative</th>
+      <th>K-Means.D</th>
+      <th>DBSCAN.D</th>
+      <th>Agglomerative.D</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>6</td>
+      <td>0</td>
+      <td>1</td>
+      <td>False</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>4</td>
+      <td>1</td>
+      <td>0</td>
+      <td>False</td>
+      <td>True</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>155</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>156</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>157</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>True</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>159</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>False</td>
+      <td>False</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+<p>160 rows × 7 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="14">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>y.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>PastGroup           80
+K-Means            409
+DBSCAN             106
+Agglomerative      106
+K-Means.D           32
+DBSCAN.D            71
+Agglomerative.D     51
+dtype: int64</code></pre>
+</div>
+</div>
+<p>I decided to sum the rows to test the accuracy of the clustering methods. Since the length of <em>PastGroup</em> is 160, the closer the sum gets to this number (only works with the columns that end in ‘.D’), the closer we are to good accuracy. We can take the sum of each column and divide by 160 to get the accuracy. Based on this scoring method, the model that performs best is the DBSCAN model, but it still comes in at less than 50%. This is mainly due to the clustering methods creating more than two clusters. So, by default, we will immediately get incorrect clusterization for anything that isn’t a 0 or a 1. This could be fixable by choosing hyperparameters that yield 2 clusters, but then we wouldn’t be selecting the optimal models according to their processes.</p>
+<div class="cell" data-execution_count="15">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># adding the predicted labels to the original df</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'K-Means'</span>] <span class="op">=</span> model.labels_</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'DBSCAN'</span>] <span class="op">=</span> model2.labels_</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Agglomerative'</span>] <span class="op">=</span> model3.labels_</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'K-Means.D'</span>] <span class="op">=</span> np.where(df[<span class="st">'PastGroup'</span>]<span class="op">==</span>df[<span class="st">'K-Means'</span>], <span class="va">True</span>, <span class="va">False</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'DBSCAN.D'</span>] <span class="op">=</span> np.where(df[<span class="st">'PastGroup'</span>]<span class="op">==</span>df[<span class="st">'DBSCAN'</span>], <span class="va">True</span>, <span class="va">False</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Agglomerative.D'</span>] <span class="op">=</span> np.where(df[<span class="st">'PastGroup'</span>]<span class="op">==</span>df[<span class="st">'Agglomerative'</span>], <span class="va">True</span>, <span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>To see if the clustering can give any new information on the data, I plotted a two-dimensional version of the data and colored the points based on their predicte cluster. It can be diffuclt to visualize the reasoning behind the clustering since we’re not including all dimensions used to cluster.</p>
+<div class="cell" data-execution_count="16">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># creating a scatterplot with their predicte labels</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">5</span>))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'RankFIFA'</span>, y<span class="op">=</span><span class="st">'eliteClub'</span>, hue<span class="op">=</span><span class="st">'DBSCAN'</span>, ax<span class="op">=</span>ax[<span class="dv">0</span>]).<span class="bu">set</span>(title<span class="op">=</span><span class="st">'DBSCAN Cluster Predictions'</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'RankFIFA'</span>, y<span class="op">=</span><span class="st">'eliteClub'</span>, hue<span class="op">=</span><span class="st">'K-Means'</span>, ax<span class="op">=</span>ax[<span class="dv">1</span>]).<span class="bu">set</span>(title<span class="op">=</span><span class="st">'K-Means Cluster Predictions'</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'RankFIFA'</span>, y<span class="op">=</span><span class="st">'eliteClub'</span>, hue<span class="op">=</span><span class="st">'Agglomerative'</span>, ax<span class="op">=</span>ax[<span class="dv">2</span>]).<span class="bu">set</span>(title<span class="op">=</span><span class="st">'Agglomerative Cluster Predictions'</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/7q/7r8tyf1x4yz98typnn4sfqd80000gn/T/ipykernel_22800/3892255608.py:6: UserWarning: Matplotlib is currently using module://matplotlib_inline.backend_inline, which is a non-GUI backend, so cannot show the figure.
+  fig.show()</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="Clustering_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Unfortunately, the clustering did not provide any new insights on the data. From this limited perspective, I theorize that the variables I have for predicting who makes it out of the group stage might not be as effective as initially thought. Either that, or some of the variables aren’t needed and are just creating additional noise.</p>
+<p><strong>Conclusion</strong></p>
+<p>I would like to start my conclusion by reminding the reader the clusterization methods are usualy used for exploratory data analysis. These methods are not often used as predictive models, but, with the right data, they can work well in doing so. After using K-Means, DBSCAN, and Agglomerative clustering methods, optimal models separated the data into 3 or 4 clusters. Although the models are likely finding trends in the data we haven’t been able to decipher, they aren’t keen in clustering the data into only 2 categories.</p>
+<p>If desired, we could ask the models to purposely put the data into only two clusters, and then we could compare their label predictions against the teams who made it past the group stage and those who didn’t. This could be a next step, but for now I want to accept the optimal models as the ones we need to analyze.</p>
+<p>If we’re trying to predict teams’ success in the World Cup with an accuracy of over 70%, these models are not the way to go. The DBSCAN, which ahs the best score at ~45% accuracy rate, is performing at a worse rate than a random guess. Do keep in mind that the clusters have more than 2 categories, so it makes perfect sense for them to be inefficient in classifying a 2-category problem. Going forward, it could be valuable to explore the relationships that the model found and also their ability to predict the teams that make it out of the group stage. Maybe the model’s ability to predict 1s is much better than the overall accuracy!</p>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

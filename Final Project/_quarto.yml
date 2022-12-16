@@ -1,0 +1,57 @@
+project:
+  type: book
+  output-dir: docs
+  
+book:
+  sidebar:
+    style: floating # docked
+    search: false
+    title: Final Project 501-01
+    tools:
+      - icon: github
+        href: https://github.com/anly501/anly-501-project-ModeEdna/tree/main/Website%20V2.0
+      - icon: linkedin
+        href: https://www.linkedin.com/in/eduardo-armenta/
+      #- icon: mailbox
+      #  href: ea795@georgetown.edu
+  page-navigation: false
+  title: World Cup Success
+  #author: Eduardo Armenta
+  #description: An analysis on success in the World Cup and the variables that help us predict it
+  #date: 12/08/2022
+  chapters:
+    - index.ipynb
+    - part: Introduction
+      chapters:
+        - ./notebooks/aboutMe.ipynb
+        - ./notebooks/aboutThisProject.ipynb
+    - part: Data
+      chapters:
+        - ./notebooks/dataGathering.ipynb
+        - ./notebooks/rawData.ipynb
+        - ./notebooks/dataCleaning.ipynb
+        - ./notebooks/cleanData.ipynb
+        - ./notebooks/eda.ipynb
+    - part: Models
+      chapters:
+        - ./notebooks/NB.ipynb
+        - ./notebooks/SVM.ipynb
+        - ./notebooks/decisiontree.ipynb
+        - ./notebooks/clustering.ipynb
+        - ./notebooks/arm.ipynb
+    - part: Conclusions
+      chapters:
+        - ./notebooks/conclusion.ipynb
+    - part: Code
+      chapters:
+        - ./notebooks/linkToCode.ipynb
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    number-sections: false
+    #title-block-style: default
+    title-block-banner: images/copa2.jpeg
+    title-block-banner-color: white
+    link-external-newwindow: true

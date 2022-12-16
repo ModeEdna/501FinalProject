@@ -1,0 +1,164 @@
+{
+  "index.qmd": {
+    "index.html": "ab8c23b4"
+  },
+  "intro.qmd": {
+    "intro.html": "2916e9d6"
+  },
+  "summary.qmd": {
+    "summary.html": "49c30434"
+  },
+  "references.qmd": {
+    "references.html": "0ad74355"
+  },
+  "test.ipynb": {
+    "test.html": "ca621345"
+  },
+  "aboutMe.ipynb": {
+    "aboutMe.html": "0651ff3b"
+  },
+  "index.ipynb": {
+    "index.html": "b9b4ab0e"
+  },
+  "aboutThisPage.ipynb": {
+    "aboutThisPage.html": "51aa4081"
+  },
+  "dataGathering.ipynb": {
+    "dataGathering.html": "3e4a1c20"
+  },
+  "dataCleaning.ipynb": {
+    "dataCleaning.html": "668fe140"
+  },
+  "NB.ipynb": {
+    "NB.html": "9021ec5a"
+  },
+  "SVM.ipynb": {
+    "SVM.html": "a0c10cd3"
+  },
+  "decisiontree.ipynb": {
+    "decisiontree.html": "2e364fcd"
+  },
+  "clustering.ipynb": {
+    "clustering.html": "e1e8fb72"
+  },
+  "linkToCode.ipynb": {
+    "linkToCode.html": "6ab8399c"
+  },
+  "./aboutThisPage.ipynb": {
+    "aboutThisPage.html": "23d887da"
+  },
+  "./aboutMe.ipynb": {
+    "aboutMe.html": "084dedbc"
+  },
+  "./dataGathering.ipynb": {
+    "dataGathering.html": "cdaceba1"
+  },
+  "./dataCleaning.ipynb": {
+    "dataCleaning.html": "b88e9449"
+  },
+  "./NB.ipynb": {
+    "NB.html": "293c2a40"
+  },
+  "./SVM.ipynb": {
+    "SVM.html": "9da12734"
+  },
+  "./decisiontree.ipynb": {
+    "decisiontree.html": "1dc99805"
+  },
+  "./clustering.ipynb": {
+    "clustering.html": "b349ec8d"
+  },
+  "./linkToCode.ipynb": {
+    "linkToCode.html": "582564f5"
+  },
+  "notebooks/aboutMe.ipynb": {
+    "aboutMe.html": "ab2d90fd"
+  },
+  "./notebooks/aboutThisPage.ipynb": {
+    "aboutThisPage.html": "4a22d4f4"
+  },
+  "./notebooks/aboutMe.ipynb": {
+    "aboutMe.html": "393b6655"
+  },
+  "./notebooks/dataGathering.ipynb": {
+    "dataGathering.html": "1bf95451"
+  },
+  "./notebooks/dataCleaning.ipynb": {
+    "dataCleaning.html": "7278dbef"
+  },
+  "./notebooks/NB.ipynb": {
+    "NB.html": "ecd6fa37"
+  },
+  "./notebooks/SVM.ipynb": {
+    "SVM.html": "f6308b4a"
+  },
+  "./notebooks/decisiontree.ipynb": {
+    "decisiontree.html": "b7011b4d"
+  },
+  "./notebooks/clustering.ipynb": {
+    "clustering.html": "ac547226"
+  },
+  "./notebooks/linkToCode.ipynb": {
+    "linkToCode.html": "1f5f6131"
+  },
+  "notebooks/aboutThisPage.ipynb": {
+    "aboutThisPage.html": "86185d3d"
+  },
+  "notebooks/dataGathering.ipynb": {
+    "dataGathering.html": "a05cd719"
+  },
+  "notebooks/dataCleaning.ipynb": {
+    "dataCleaning.html": "bd97ae24"
+  },
+  "notebooks/NB.ipynb": {
+    "NB.html": "85824df8"
+  },
+  "notebooks/SVM.ipynb": {
+    "SVM.html": "2588c013"
+  },
+  "notebooks/decisiontree.ipynb": {
+    "decisiontree.html": "3f3ac1cf"
+  },
+  "notebooks/clustering.ipynb": {
+    "clustering.html": "c5a885a0"
+  },
+  "notebooks/linkToCode.ipynb": {
+    "linkToCode.html": "80a99af1"
+  },
+  "./notebooks/aboutThisProject.ipynb": {
+    "aboutThisProject.html": "6485b8a5"
+  },
+  "notebooks/aboutThisProject.ipynb": {
+    "aboutThisProject.html": "7607604f"
+  },
+  "./notebooks/arm.ipynb": {
+    "arm.html": "b266ce71"
+  },
+  "./notebooks/conclusion.ipynb": {
+    "conclusion.html": "521c7a22"
+  },
+  "notebooks/conclusion.ipynb": {
+    "conclusion.html": "d3a773c0"
+  },
+  "./notebooks/rawData.ipynb": {
+    "rawData.html": "6e848b00"
+  },
+  "./notebooks/cleanData.ipynb": {
+    "cleanData.html": "32027512"
+  },
+  "./notebooks/eda.ipynb": {
+    "eda.html": "9ee424f2"
+  },
+  "notebooks/rawData.ipynb": {
+    "rawData.html": "ea58bd3d"
+  },
+  "notebooks/arm.ipynb": {
+    "arm.html": "b96e2793"
+  },
+  "notebooks/cleanData.ipynb": {
+    "cleanData.html": "b24779d9"
+  },
+  "notebooks/eda.ipynb": {
+    "eda.html": "2d80df03"
+  }
+}

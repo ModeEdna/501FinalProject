@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>World Cup Success - Naive Bayes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<style>
+    .quarto-title-block .quarto-title-banner {
+      color: white;
+background-image: url(../images/copa2.jpeg);
+background-size: cover;
+    }
+    </style>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Naive Bayes</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title d-none d-lg-block">Naive Bayes</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Final Project 501-01</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/anly501/anly-501-project-ModeEdna/tree/main/Website%20V2.0" title="" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/eduardo-armenta/" title="" class="sidebar-tool px-1"><i class="bi bi-linkedin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle sidebar-tool" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">My background</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Introduction</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/aboutMe.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About Me</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/aboutThisProject.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Project Introduction</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Data</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/dataGathering.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Gathering</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/rawData.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Raw Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/dataCleaning.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Data Cleaning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/cleanData.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Clean Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/eda.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Exploring Data</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/NB.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Naive Bayes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/SVM.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">SVM</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/decisiontree.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Decision Trees</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/clustering.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Clustering</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/arm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">ARM and Networking</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Conclusions</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Code</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/linkToCode.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Code</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#about-naive-bayes" id="toc-about-naive-bayes" class="nav-link active" data-scroll-target="#about-naive-bayes">About Naive Bayes</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data preparation</a></li>
+  <li><a href="#model-results" id="toc-model-results" class="nav-link" data-scroll-target="#model-results">Model results</a></li>
+  <li><a href="#conclusions-and-discussion" id="toc-conclusions-and-discussion" class="nav-link" data-scroll-target="#conclusions-and-discussion">Conclusions and discussion</a></li>
+  <li><a href="#naive-bayes-in-python" id="toc-naive-bayes-in-python" class="nav-link" data-scroll-target="#naive-bayes-in-python">Naive Bayes in Python</a>
+  <ul class="collapse">
+  <li><a href="#understanding-the-data" id="toc-understanding-the-data" class="nav-link" data-scroll-target="#understanding-the-data">Understanding the data</a></li>
+  <li><a href="#model-results-1" id="toc-model-results-1" class="nav-link" data-scroll-target="#model-results-1">Model results</a></li>
+  <li><a href="#conclusions-and-discussion-1" id="toc-conclusions-and-discussion-1" class="nav-link" data-scroll-target="#conclusions-and-discussion-1">Conclusions and Discussion</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="about-naive-bayes" class="level3">
+<h3 class="anchored" data-anchor-id="about-naive-bayes">About Naive Bayes</h3>
+<p>Naive Bayes is one of the simpler techniques for creating classifying models, yet it remains an effective one. It’s common to use this type of model as a first approach due to it’s scalability and ease of use. Like any Naive Bayes model, there is an assumption that each vector is independent and identically distributed. For example, a pet will be considered to be a dog if it weighs over 10 kgs, has colorful fur, and canine teeth; our classifier will assume each variable contributes independently to the probability that this is a dog, irregardless of any possible correlations between the variables.</p>
+<p>The model uses maximum likelihood estimation (MLE) for the parameters, meaning that we can work with the model without accepting Bayesian classification. Although they seem simple compared to other models, they remain popular due to their surprising effectiveness.</p>
+</section>
+<section id="data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="data-preparation">Data preparation</h3>
+<p>For the record data, used in R, I had to first clean the dataset I had, as it seems I missed a few parts from prior cleaning. This involved filling in rows with missing values. Examples of this would be China in 2002 having missing average age, caps, and elite club column inputs. In total, there were 4 rows that needed cleaning, so instead of recreating my dataset with new code, I chose to add the values manually. The information was taken from the same pages I used to create the tables. The label to predict is the column PastGroup, which denotes if the team made it past the group stage of the tournament. The data is evenly distributed in this regard, as half of the teams that participate make it into the next round. Although I had previosuly created a normalized data set, given that I had to add some data to the table, I renormalized the data, but left the label column out of the normalization so the result is an understandable label (0 or 1).</p>
+<p>Once the data was appropriate, I split the data into training and test sets with a 7:3 ratio, respectively. From here onward, it was a matter of playing with the input variables to see which combination gave me the best prediction. So far, eliteClub, RankFIFA, Caps, and DifficultGroup are the variables that came up with the best performance. Some next steps could be to understand if we can use continuous variables with categorical (0, 1) variables or if using both of these in a model causes problems with the predictions.</p>
+</section>
+<section id="model-results" class="level3">
+<h3 class="anchored" data-anchor-id="model-results">Model results</h3>
+<p>After training the model with 70% of the available data, I used it to predict labels on both the training and test data. For the training data, we get the following confusion matrix:</p>
+<p><img src="../images/confusionMatrix3.png" class="img-fluid"></p>
+<!--- ![](../images/StatsCMTrain.png) --->
+<p>The predictions on the training model are very encouraging, getting over 77% of labels correct. Albeit, we’re predicting on the data used to train the model, so I can’t get my hopes up too much. However, my main focus is for the predictions of making it past the group stage (label 1) to be accurate and the statistics show an incredible 85% performance rate. However, this is only the result for the training test; I had to check if the model is any good with the test data. Here are the results of the model with the testing data:</p>
+<p><img src="../images/confusionMatrix4.png" class="img-fluid"></p>
+<!--- ![](../images/StatsCMTest.png) --->
+</section>
+<section id="conclusions-and-discussion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusions-and-discussion">Conclusions and discussion</h3>
+<p>We have the results for the test… so what now? The first iteration of the model has achieved an overall predictive ability of 64%. In other words, it will correctly guess if a team makes it past, or stays in, the group stage 2 out of 3 times. Guessing if the team doesn’t making it out has a 2 out of 3 succes rate while guessing if a team makes it to the next round has a performance of 62%, which is almost the same as the overall accuracy. As a first iteration and from a general standpoint of view, guessing ~2 out of 3 right is a good result, but there’s work to do. If the model performance were great at predicting teams that stay in the group stage, I could just flip the results and know that if X team is predicted to stay in the group, then the other teams of said group would be more likely to make it through to the next round.</p>
+<p>Next steps: I’m interested in comparing indivual predictions. That is, for teams that are expected to make it out of the group, were any of them predicted to lose in the early round and not make it? How about teams that are expected to not make it out of the group stage… were any of them predicted to make it out? I’d be interested in comparing the results from each of these categories. I think a big problem for this model is the lack of data. We have too few participants in the world cup and thus a small sample to train on. Once I make the predictions for the 2022 World Cup, I will have trained the model with the whole dataset I have and make the predictions on the teams for 2022. The good thing is that results will be known soon enough and I’ll be able to find out if my model had a good performance in the incoming World Cup. Going forward, I should focus on more feature engineering. I need to give my dataset more variables to help the model and I need to ensure all of them fit the standards of use.</p>
+</section>
+<section id="naive-bayes-in-python" class="level2">
+<h2 class="anchored" data-anchor-id="naive-bayes-in-python">Naive Bayes in Python</h2>
+<p>The initial text data that i got, from Twitter, ended up being of low quality, so I decided to utilize the code Dr.&nbsp;Hickman provided for us to get new text data from Wikipedia. The code gathers paragraphs from articles related to desired topics (i.e.&nbsp;‘FIFA Brazil’) and returns a dataframe text, label, and sentiment. The label will be the topic for the article and the sentiment score comes from the NLTK library, which qualifies its sentiment from -1 to 1 representing negative or positive sentiment. In the second part of the code, the text is vectoried to create a numerical presentation of the text data so that it’s useful as input for the model. The following images show the text data prior to vectorization.</p>
+<p><img src="../images/wikiText.png" class="img-fluid"></p>
+<p>The second image is a bit difficult to visualize, but it’s a matrix in which each array represents the corpus vocabulary and the zeroes or ones represent if the word from the corpus appears in the provided text. In other words, the columns are each unique word present in the corpus while the rows are yes/no counts of the word appearing in the text.</p>
+<p><img src="../images/wikiTextVector.png" class="img-fluid"></p>
+<section id="understanding-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-the-data">Understanding the data</h3>
+<p>Since this is new data for the project, I’m adding a small section of data exploration. Given that the dataset is quite simple, we can be very straightforward with the step. If the goal is to classify labels, a pairplot would give us a quick look into possible clusters. Here is the pairplot for the data:</p>
+<p><img src="../images/wikiTextPairplot.png" class="img-fluid"></p>
+<p>Unfortunately, the Pairplot is showing little to no clusters. This means that the likelihood of our data leading to an accurate model is low. On the other hand, I’m working with 32 labels, so the worst case scenario in terms of accuracy should be 1/32, or 3.16%. Also, although this information isn’t seen through the plot, it must be noted that the label words weren’t removed from the text. For example, if the label is ‘FIFA Germany’, neither of the words were removed from the text, so any accuracy I get can be questions. However, the counterargument here is that the pages gathered from Wikipedia will most likely reference other countries, so the text will have more than one label present in it.</p>
+</section>
+<section id="model-results-1" class="level3">
+<h3 class="anchored" data-anchor-id="model-results-1">Model results</h3>
+<p>My initial attempt at predicting text (we will try other techniques in further homeworks) was with a Naive Bayes multinomial classifier. The results were better than a random classifier, but still not good enough to use in a real-world scenario. In the two following images, we can see the performance of the model on train and test data. We can ignore the result for the train data since we’re only interested in the test data accuracy. For a 32-feature model, getting a 27% accuracy represents a ~9 times improvement over a random classifier, which is a great result. Within the confusion matrix, I find it interesting that the 14th label gets a close to 100% accuracy rate. For the rest of the scores on the diagonal, it seems that only 10 of them are semi-accurately predicting their labels.</p>
+<p><img src="../images/NBTextConfusionMatrix.png" class="img-fluid"></p>
+<p><img src="../images/NBTextAccuracy.png" class="img-fluid"></p>
+</section>
+<section id="conclusions-and-discussion-1" class="level3">
+<h3 class="anchored" data-anchor-id="conclusions-and-discussion-1">Conclusions and Discussion</h3>
+<p>So we have the results for this model… what now? How can we tie this into the project’s goal and see if it can help with predicting the outcome of group stages? A far-fetched idea is to get text data from articles found online, predict their label based on their sentiment score, and then assign the sentiment score to the team in the record database. Would sentiment label predict a certain outcome? Maybe the higher the sentiment, the better the expected result for each team. All things taken into consideration, we might have to move on to a different model because this one is only good at predicting the 14th label. Or, if we want to change the script, we could use this model solely for predicting the 14th label and see how well it does. Perhaps it’s great for that.</p>
+<p>Next steps: Firstly, we should remove the label from the text data and see how the model performs without having the labels within the text. Then, we can look at different, possible models that would fit this type of modeling better. A decision tree could be the next step in the process. Based on the results from the record data model, it would seem more appropriate to focus on using data that’s numerical, rather than trying to integrate text data into the problem.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
